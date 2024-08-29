@@ -60,6 +60,7 @@ public class PropertyService implements PropertyUseCase {
                 property.getUbication().toLowerCase().contains("cartagena") )) {
             throw new CustomException(HttpStatus.FORBIDDEN, "la propiedad tiene que estar ubicada en Medellín, Bogotá, Cali o Cartagena");
         }
+
         if((property.getUbication().toLowerCase().contains("bogota") ||
                 property.getUbication().toLowerCase().contains("bogotá") ||
                 property.getUbication().toLowerCase().contains("cali")) && property.getPrice()<2000000){
