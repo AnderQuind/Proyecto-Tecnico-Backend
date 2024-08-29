@@ -63,7 +63,7 @@ public class PropertyController {
     public ResponseEntity<Object> deletePropertyByName(@PathVariable String name) {
         try {
             return propertyService.deleteProperty(name)
-                    .map(property -> new ResponseEntity<>((Object) Map.of("response", (Object) property, "answer", "Propiedad eliminada con éxito"),
+                    .map(property -> new ResponseEntity<>((Object) Map.of("answer", "Propiedad eliminada con éxito"),
                             HttpStatus.OK))
                     .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception e) {

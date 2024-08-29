@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -80,16 +81,16 @@ class PropertyControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(propertyInput)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Test_Property"));
+                .andExpect(jsonPath("$.answer").value("propiedad creada con éxito"));
     }
 
     @Test
     public void testGetAvailableProperties() throws Exception {
-        when(propertyService.getAvailableProperties()).thenReturn(Optional.of(Collections.singletonList(new Property())));
+        when(propertyService.getAvailableProperties()).thenReturn(Optional.of(List.of(property)));
 
         mockMvc.perform(get("/api/property/available"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$.response").isArray());
     }
 
     @Test
@@ -101,7 +102,7 @@ class PropertyControllerTest {
                         .param("minPrice", "1000")
                         .param("maxPrice", "2000"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
+                .andExpect(jsonPath("$.response").isArray());
     }
 
     @Test
@@ -122,7 +123,7 @@ class PropertyControllerTest {
 
         mockMvc.perform(delete("/api/property/Test_Property"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Test_Property"));
+                .andExpect(jsonPath("$.answer").value("Propiedad eliminada con éxito"));
     }
 
     @Test
@@ -143,7 +144,7 @@ class PropertyControllerTest {
 
         mockMvc.perform(get("/api/property/Test_Property"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Test_Property"));
+                .andExpect(jsonPath("$.answer").value("Propiedad encontrada con éxito"));
     }
 }
 
