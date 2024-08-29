@@ -15,4 +15,8 @@ public class Property {
     private float price;
     private LocalDateTime creationDate;
     private Boolean deleted;
+
+    public Property(String name) {
+        this.name = name;
+    }
 }

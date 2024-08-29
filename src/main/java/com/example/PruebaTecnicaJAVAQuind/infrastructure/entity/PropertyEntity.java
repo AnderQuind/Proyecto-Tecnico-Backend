@@ -24,4 +24,8 @@ public class PropertyEntity {
     private float price;
     private LocalDateTime creationDate;
     private Boolean deleted;
+
+    public PropertyEntity(String name) {
+        this.name = name;
+    }
 }

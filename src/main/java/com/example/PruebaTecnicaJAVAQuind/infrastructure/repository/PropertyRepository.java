@@ -10,9 +10,6 @@ import java.util.List;
 
 @Repository
 public interface PropertyRepository extends JpaRepository<PropertyEntity, String> {
-    // Método para encontrar propiedades disponibles usando una consulta JPQL
-    //@Query("SELECT p FROM PropertyEntity p WHERE p.available = true")
-    //List<PropertyEntity> findAvailableProperties();
     // Método para encontrar propiedades disponibles
     List<PropertyEntity> findByAvailableTrue();
 

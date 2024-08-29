@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -23,25 +23,27 @@ public class PropertyController {
         try {
             Property property = propertyService.toDomainModel(propertyInput);
             Property createdProperty = propertyService.createProperty(property);
-            return new ResponseEntity<>(createdProperty, HttpStatus.OK);
+            return new ResponseEntity<>(Map.of("response", createdProperty, "answer", "propiedad creada con éxito"), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<Property>> getAvailableProperties() {
+    public ResponseEntity<Map<String, Object>> getAvailableProperties() {
         return propertyService.getAvailableProperties()
-                .map(availableProperties -> new ResponseEntity<>(availableProperties, HttpStatus.OK))
+                .map(availableProperties -> new ResponseEntity<>(Map.of("response", availableProperties, "answer", "propiedad creada con éxito"),
+                        HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/available/price-range")
-    public ResponseEntity<List<Property>> getAvailablePropertiesBetweenPriceRange(
+    public ResponseEntity<Map<String, Object>> getAvailablePropertiesBetweenPriceRange(
             @RequestParam Float minPrice,
             @RequestParam Float maxPrice) {
         return propertyService.getAvailablePropertiesBetweenPriceRange(minPrice, maxPrice)
-                .map(availableProperties -> new ResponseEntity<>(availableProperties, HttpStatus.OK))
+                .map(availableProperties -> new ResponseEntity<>(Map.of("response", availableProperties, "answer", "propiedades listadas con éxito"),
+                        HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -61,7 +63,8 @@ public class PropertyController {
     public ResponseEntity<Object> deletePropertyByName(@PathVariable String name) {
         try {
             return propertyService.deleteProperty(name)
-                    .map(property -> new ResponseEntity<>((Object) property, HttpStatus.OK))
+                    .map(property -> new ResponseEntity<>((Object) Map.of("response", (Object) property, "answer", "Propiedad eliminada con éxito"),
+                            HttpStatus.OK))
                     .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
@@ -80,9 +83,9 @@ public class PropertyController {
     }
 
     @GetMapping("/{name}")
-    public ResponseEntity<Property> getPropertyByName(@PathVariable String name) {
+    public ResponseEntity<Map<String, Object>> getPropertyByName(@PathVariable String name) {
         return propertyService.getProperty(name)
-                .map(property -> new ResponseEntity<>(property, HttpStatus.OK))
+                .map(property -> new ResponseEntity<>(Map.of("response", (Object) property, "answer", "Propiedad encontrada con éxito"), HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -26,6 +28,10 @@ public class ClientEntity {
     @Transient
     private List<String> propertiesAsArray;  // Representación en Java
 
+    public ClientEntity(String idClient) {
+        this.idClient = idClient;
+    }
+
     public void setPropertiesName(String propertiesName) {
         this.propertiesName = propertiesName;
         convertJsonToList();
@@ -36,11 +42,17 @@ public class ClientEntity {
         convertListToJson();
     }
 
+    public static List<String> stringToList(String listStr) {
+        return Arrays.stream(listStr.substring(1, listStr.length() - 1).split(","))
+                .map(String::trim)
+                .toList();
+    }
+
     private void convertJsonToList() {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            this.propertiesAsArray = mapper.readValue(this.propertiesName, new TypeReference<List<String>>() {});
-        } catch (IOException e) {
+            this.propertiesAsArray = stringToList(this.propertiesName);//mapper.readValue(this.propertiesName, new TypeReference<List<String>>() {});
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
