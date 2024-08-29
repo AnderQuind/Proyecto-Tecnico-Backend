@@ -133,6 +133,9 @@ public class PropertyService implements PropertyUseCase {
             if(!leasedProperty.getAvailable() || leasedProperty.getDeleted()){
                 throw new CustomException(HttpStatus.NOT_FOUND, "Esta propiedad no se encuentra disponible");
             }
+            leasedProperty.setAvailable(false);
+            propertyUseCase.updateProperty(leasedProperty);
+            clientService.leasePropertyToClient(leasePropertyInput);
         } else{
             throw new CustomException(HttpStatus.NOT_FOUND, "No hay ninguna propiedad con el nombre indicado");
         }
